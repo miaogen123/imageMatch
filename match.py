@@ -10,14 +10,14 @@ from .utils import getColorVec
 import  pymysql
 
 FOLDER="./image.vary.jpg/"
-db = pymysql.connect(DB_addr,DB_user,DB_passwod,DB_name )
+db = pymysql.connect(DB_addr, DB_user, DB_passwod, DB_name )
 
 
 if __name__ == '__main__':
     #WriteDb()
     #exit()
     start_time=time.time()
-    fileToProcess=input("输入子文件中图片的文件名")
+    fileToProcess=input("输入子文件夹中图片的文件名")
     #fileToProcess="45.jpg"
     if(not os.path.exists(FOLDER+fileToProcess)):
         raise RuntimeError("文件不存在")

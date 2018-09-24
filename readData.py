@@ -1,15 +1,14 @@
 # _*_ coding=utf-8 _*_
 __date__ = '9/24/2018 13:22 '
 
-from math import sqrt
 import cv2
 import time
 import os
 import numpy as np
 from scipy.stats.stats import  pearsonr
 #配置项文件
-from .config import *
-from .utils import getColorVec
+from config import *
+from utils import getColorVec
 
 import  pymysql
 
@@ -44,7 +43,7 @@ def WriteDb(filename):
         modified_time= time.strftime(ISFORMAT, modified_time_ori)
         size=filestat.st_size
         colorVec=getColorVec(img)
-        sqlstat="insert into ImageMatchInfo (name, size, modified_time, featureValue) value (%s, %s, %s, %s)"
+        sqlstat="insert into ImageMatchInfo_fine (name, size, modified_time, featureValue) value (%s, %s, %s, %s)"
         #colorVecstr="".join(colorVec)
         colorVecstr=str()
         for one in colorVec:
@@ -67,23 +66,9 @@ def WriteDb(filename):
                 maxToCommit=0
 
 
-def getPixelGrade(pixel):
-    grade=[]
-    for one in np.array(pixel):
-        if(one>-1 and one<=63):
-            grade.append(0)
-        elif(one>63 and one<=127):
-            grade.append(1)
-        elif(one>127 and one<=191):
-            grade.append(2)
-        elif(one>191 and one<=255):
-            grade.append(2)
-    return grade
-
-
 
 
 if __name__ == '__main__':
-    filename=input("请输入想要读的文件的路径, 不输入即读取",FOLDER, "下的所有文件")
+    filename=input("请输入想要读的文件的路径, 不输入即读取"+FOLDER+"下的所有文件")
     WriteDb(filename)
 
