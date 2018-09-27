@@ -12,7 +12,6 @@ from utils import getColorVec
 
 import  pymysql
 
-FOLDER="./image.vary.jpg/"
 db = pymysql.connect(DB_addr,DB_user,DB_passwod,DB_name )
 
 #读取folderPath下的所有文件

@@ -5,27 +5,26 @@ import os
 import numpy as np
 from scipy.stats.stats import  pearsonr
 #配置项文件
-from .config import *
-from .utils import getColorVec
 import  pymysql
+from config import *
+from utils import getColorVec
 
-FOLDER="./image.vary.jpg/"
 db = pymysql.connect(DB_addr, DB_user, DB_passwod, DB_name )
 
-
-if __name__ == '__main__':
-    #WriteDb()
-    #exit()
-    start_time=time.time()
-    fileToProcess=input("输入子文件夹中图片的文件名")
+def query(filename):
+    if filename=="":
+        fileToProcess=input("输入子文件夹中图片的文件名")
+    else:
+        fileToProcess=filename
     #fileToProcess="45.jpg"
     if(not os.path.exists(FOLDER+fileToProcess)):
         raise RuntimeError("文件不存在")
+    start_time=time.time()
     img=cv2.imread(FOLDER+fileToProcess)
     colorVec1=getColorVec(img)
     #流式游标处理
     conn = pymysql.connect(host=DB_addr, user=DB_user, passwd=DB_passwod, db=DB_name, port=3306,
-                       charset='utf8', cursorclass = pymysql.cursors.SSCursor)
+                           charset='utf8', cursorclass = pymysql.cursors.SSCursor)
     leastNearRInFive=0
 
     Rlist=[]
@@ -37,13 +36,15 @@ if __name__ == '__main__':
         init_str+="k"
 
     with conn.cursor() as cursor:
-        cursor.execute("select name, featureValue from ImageMatchInfo order by name")
+        cursor.execute("select name, featureValue from ImageMatchInfo_fine order by name")
         row=cursor.fetchone()
         count=1
         while row is not None:
             if row[0] == fileToProcess:
                 row=cursor.fetchone()
                 continue
+            if row[0] in ["8807.jpg", "7956.jpg", "7910.jpg", "7909.jpg"]:
+                print("")
             colorVec2=row[1].split(',')
             colorVec2=list(map(eval, colorVec2))
             R2=pearsonr(colorVec1, colorVec2)
@@ -66,4 +67,9 @@ if __name__ == '__main__':
     for one in range(0, 5):
         print(namelist[one]+"\t"+str(float(Rlist[one])))
 
+
+if __name__ == '__main__':
+    #WriteDb()
+    #exit()
+    query("")
 
