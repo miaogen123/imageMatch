@@ -264,6 +264,8 @@ __pycache__/
 
 #customed file 
 实验报告.docx
-config.py
 image.vary.jpg/*
 imageRetriveProject.pdf
+/实验数据/*
+mysql_config.py
+

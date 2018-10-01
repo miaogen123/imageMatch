@@ -8,13 +8,14 @@ from scipy.stats.stats import  pearsonr
 #配置项文件
 import  pymysql
 from config import *
+from mysql_config import *
 from utils import getColorVec
 
 db = pymysql.connect(DB_addr, DB_user, DB_passwod, DB_name )
 
 def query(filename):
     if filename=="":
-        fileToProcess=raw_input("输入子文件夹中图片的文件名")
+        fileToProcess=input("输入子文件夹中图片的文件名")
     else:
         fileToProcess=filename
     #fileToProcess="45.jpg"
@@ -34,7 +35,6 @@ def query(filename):
     for one in range(0, MATCH_ITEM_NUM):
         Rlist.append(0)
         namelist.append(init_str)
-        init_str+="k"
 
     with conn.cursor() as cursor:
         cursor.execute("select name, featureValue from ImageMatchInfo_1331 order by name")
@@ -55,7 +55,7 @@ def query(filename):
                         Rlist.pop(MATCH_ITEM_NUM)
                         namelist.insert(index, row[0])
                         namelist.pop(MATCH_ITEM_NUM)
-                        leastNearRInFive=Rlist[4]
+                        leastNearRInFive=Rlist[MATCH_ITEM_NUM-1]
                         break
                     index+=1
             count+=1
@@ -64,7 +64,7 @@ def query(filename):
     time_cost=end_time-start_time
     print("spend ", time_cost, ' s')
     for one in range(0, MATCH_ITEM_NUM):
-        print(namelist[one]+"\t"+str(float(Rlist[one])))
+        print(namelist[one]+"\t\t"+str(float(Rlist[one])))
 
 
 if __name__ == '__main__':
