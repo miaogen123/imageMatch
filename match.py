@@ -47,12 +47,14 @@ def query(filename):
             colorVec2=row[1].split(',')
             colorVec2=list(map(eval, colorVec2))
             #R2=pearsonr(colorVec1, colorVec2)
+            #rela=R2[0]
             R2=Bdistance(colorVec1, colorVec2)
-            if abs(R2[0])>abs(leastNearRInFive):
+            rela=R2
+            if abs(rela)>abs(leastNearRInFive):
                 index=0
                 for one in Rlist:
-                    if R2[0] >one:
-                        Rlist.insert(index, R2[0])
+                    if rela >one:
+                        Rlist.insert(index, rela)
                         Rlist.pop(MATCH_ITEM_NUM)
                         namelist.insert(index, row[0])
                         namelist.pop(MATCH_ITEM_NUM)

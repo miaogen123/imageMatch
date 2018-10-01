@@ -37,8 +37,8 @@ def Bdistance(l1, l2):
         raise RuntimeError("计算巴氏距离时，引入长度不相等的向量")
     s1=sum(l1)
     s2=sum(l2)
-    BD=0.0
-    for ind in len(l1):
+    BD=0
+    for ind in range(0, len(l1)):
         BD+=sqrt((l1[ind]/s1)*(l2[ind]/s2))
     return BD
 
