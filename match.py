@@ -15,7 +15,7 @@ db = pymysql.connect(DB_addr, DB_user, DB_passwod, DB_name )
 
 def query(filename):
     if filename=="":
-        fileToProcess=input("输入子文件夹中图片的文件名")
+        fileToProcess=raw_input("输入子文件夹中图片的文件名")
     else:
         fileToProcess=filename
     #fileToProcess="45.jpg"
@@ -37,7 +37,7 @@ def query(filename):
         namelist.append(init_str)
 
     with conn.cursor() as cursor:
-        cursor.execute("select name, featureValue from ImageMatchInfo_1331 order by name")
+        cursor.execute("select name, featureValue from ImageMatchInfo_"+str(TABLE_NAME_COM)+" order by name")
         row=cursor.fetchone()
         count=1
         while row is not None:
@@ -46,10 +46,14 @@ def query(filename):
                 continue
             colorVec2=row[1].split(',')
             colorVec2=list(map(eval, colorVec2))
-            #R2=pearsonr(colorVec1, colorVec2)
-            #rela=R2[0]
-            R2=Bdistance(colorVec1, colorVec2)
-            rela=R2
+            R2=pearsonr(colorVec1, colorVec2)
+            rela=R2[0]
+            #R2=Bdistance(colorVec1, colorVec2)
+            #rela=R2
+	    #忽略正负性
+            #if abs(rela)>abs(leastNearRInFive):
+            #考虑正负
+            #if rela>leastNearRInFive:
             if abs(rela)>abs(leastNearRInFive):
                 index=0
                 for one in Rlist:
