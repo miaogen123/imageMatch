@@ -1,4 +1,6 @@
 # _*_ coding=utf-8 _*_
+from math import sqrt
+
 __date__ = '9/24/2018 13:28 '
 
 import cv2
@@ -29,6 +31,17 @@ def getPixelGrade(pixel):
     for one in np.array(pixel):
         grade.append(int(one/base))
     return grade
+
+def Bdistance(l1, l2):
+    if(len(l1)!=len(l2)):
+        raise RuntimeError("计算巴氏距离时，引入长度不相等的向量")
+    s1=sum(l1)
+    s2=sum(l2)
+    BD=0.0
+    for ind in len(l1):
+        BD+=sqrt((l1[ind]/s1)*(l2[ind]/s2))
+    return BD
+
 
 
 #logger = logging.getLogger(__name__)

@@ -9,6 +9,7 @@ from scipy.stats.stats import  pearsonr
 #配置项文件
 from config import *
 from utils import getColorVec
+from mysql_config import  *
 
 import  pymysql
 

@@ -9,7 +9,7 @@ from scipy.stats.stats import  pearsonr
 import  pymysql
 from config import *
 from mysql_config import *
-from utils import getColorVec
+from utils import getColorVec, Bdistance
 
 db = pymysql.connect(DB_addr, DB_user, DB_passwod, DB_name )
 
@@ -46,7 +46,8 @@ def query(filename):
                 continue
             colorVec2=row[1].split(',')
             colorVec2=list(map(eval, colorVec2))
-            R2=pearsonr(colorVec1, colorVec2)
+            #R2=pearsonr(colorVec1, colorVec2)
+            R2=Bdistance(colorVec1, colorVec2)
             if abs(R2[0])>abs(leastNearRInFive):
                 index=0
                 for one in Rlist:
