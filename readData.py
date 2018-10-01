@@ -13,6 +13,7 @@ from utils import getColorVec
 import  pymysql
 
 db = pymysql.connect(DB_addr,DB_user,DB_passwod,DB_name )
+MAX_TO_COMMIT=500
 
 #读取folderPath下的所有文件
 def readFileInCurrentFolder(folderPath):
@@ -42,7 +43,7 @@ def WriteDb(filename):
         modified_time= time.strftime(ISFORMAT, modified_time_ori)
         size=filestat.st_size
         colorVec=getColorVec(img)
-        sqlstat="insert into ImageMatchInfo_fine (name, size, modified_time, featureValue) value (%s, %s, %s, %s)"
+        sqlstat="insert into ImageMatchInfo_1331 (name, size, modified_time, featureValue) value (%s, %s, %s, %s)"
         #colorVecstr="".join(colorVec)
         colorVecstr=str()
         for one in colorVec:
@@ -57,7 +58,7 @@ def WriteDb(filename):
             #TODO::删掉下面一行
             db.commit()
             maxToCommit+=1
-            if maxToCommit>50:
+            if maxToCommit>MAX_TO_COMMIT:
                 db.commit()
                 end_time=time.time()
                 print(end_time-start_time, " s")
@@ -68,6 +69,7 @@ def WriteDb(filename):
 
 
 if __name__ == '__main__':
-    filename=input("请输入想要读的文件的路径, 不输入即读取"+FOLDER+"下的所有文件")
+    #filename=input("请输入想要读的文件的路径, 不输入即读取"+FOLDER+"下的所有文件")
+    filename=""
     WriteDb(filename)
 

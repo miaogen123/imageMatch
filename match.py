@@ -1,3 +1,4 @@
+# _*_ coding=utf-8 _*_
 from math import sqrt
 import cv2
 import time
@@ -13,7 +14,7 @@ db = pymysql.connect(DB_addr, DB_user, DB_passwod, DB_name )
 
 def query(filename):
     if filename=="":
-        fileToProcess=input("输入子文件夹中图片的文件名")
+        fileToProcess=raw_input("输入子文件夹中图片的文件名")
     else:
         fileToProcess=filename
     #fileToProcess="45.jpg"
@@ -30,21 +31,19 @@ def query(filename):
     Rlist=[]
     namelist=[]
     init_str="k"
-    for one in range(0, 5):
+    for one in range(0, MATCH_ITEM_NUM):
         Rlist.append(0)
         namelist.append(init_str)
         init_str+="k"
 
     with conn.cursor() as cursor:
-        cursor.execute("select name, featureValue from ImageMatchInfo_fine order by name")
+        cursor.execute("select name, featureValue from ImageMatchInfo_1331 order by name")
         row=cursor.fetchone()
         count=1
         while row is not None:
             if row[0] == fileToProcess:
                 row=cursor.fetchone()
                 continue
-            if row[0] in ["8807.jpg", "7956.jpg", "7910.jpg", "7909.jpg"]:
-                print("")
             colorVec2=row[1].split(',')
             colorVec2=list(map(eval, colorVec2))
             R2=pearsonr(colorVec1, colorVec2)
@@ -53,9 +52,9 @@ def query(filename):
                 for one in Rlist:
                     if R2[0] >one:
                         Rlist.insert(index, R2[0])
-                        Rlist.pop(5)
+                        Rlist.pop(MATCH_ITEM_NUM)
                         namelist.insert(index, row[0])
-                        namelist.pop(5)
+                        namelist.pop(MATCH_ITEM_NUM)
                         leastNearRInFive=Rlist[4]
                         break
                     index+=1
@@ -64,7 +63,7 @@ def query(filename):
     end_time=time.time()
     time_cost=end_time-start_time
     print("spend ", time_cost, ' s')
-    for one in range(0, 5):
+    for one in range(0, MATCH_ITEM_NUM):
         print(namelist[one]+"\t"+str(float(Rlist[one])))
 
 
