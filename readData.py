@@ -8,7 +8,7 @@ import numpy as np
 from scipy.stats.stats import  pearsonr
 #配置项文件
 from config import *
-from utils import getColorVec
+from utils import getColorVec, getFileSuffix, pHash
 from mysql_config import  *
 
 import  pymysql
@@ -21,13 +21,15 @@ def readFileInCurrentFolder(folderPath):
     all=os.listdir(folderPath)
     files=[]
     for file in  all:
-        if not os.path.isdir(file):
+        if not os.path.isdir(file) and getFileSuffix(file) in ImageFormatSet :
             files.append(file)
     return files
 
 
 def WriteDb(filename):
     if filename!="":
+        if getFileSuffix(filename) not in ImageFormatSet:
+            return
         fileSet=[filename]
     else:
         fileSet=readFileInCurrentFolder(FOLDER)
@@ -43,14 +45,9 @@ def WriteDb(filename):
         modified_time_ori=time.localtime(filestat.st_mtime)
         modified_time= time.strftime(ISFORMAT, modified_time_ori)
         size=filestat.st_size
-        colorVec=getColorVec(img)
-        sqlstat="insert into ImageMatchInfo_1331 (name, size, modified_time, featureValue) value (%s, %s, %s, %s)"
-        #colorVecstr="".join(colorVec)
-        colorVecstr=str()
-        for one in colorVec:
-            colorVecstr+=str(one)+","
-        colorVecstr=colorVecstr.strip(',')
-        toGetTuple=[file, size, modified_time, colorVecstr]
+        sqlstat="insert into "+TABLE_NAME+" (name, size, modified_time, featureValue) value (%s, %s, %s, %s)"
+
+        toGetTuple=[file, size, modified_time, pHash(img)]
         try:
             cursor.execute(sqlstat, tuple(toGetTuple))
         except Exception as e:
@@ -65,8 +62,6 @@ def WriteDb(filename):
                 print(end_time-start_time, " s")
                 start_time=end_time
                 maxToCommit=0
-
-
 
 
 if __name__ == '__main__':
