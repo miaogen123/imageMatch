@@ -17,7 +17,7 @@ MATCH_ITEM_NUM=10
 
 #pHash算法
 #table name
-pHash_TABLE_NAME="phash_feature"
+pHash_TABLE_NAME="pHash_feature"
 
 #使用的table
 TABLE_NAME=pHash_TABLE_NAME

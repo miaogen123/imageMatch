@@ -46,20 +46,23 @@ def Bdistance(l1, l2):
 def pHash(imgfile):
     """get image pHash value"""
     #加载并调整图片为32x32灰度图片
-    img=cv2.resize(imgfile,(64,64),interpolation=cv2.INTER_CUBIC)
+    img=cv2.resize(imgfile,(64,64))
+    img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
         #创建二维列表
     h, w = img.shape[:2]
     vis0 = np.zeros((h,w), np.float32)
-    vis0[:h,:w] = img       #填充数据
+    vis0[:h,:w] = img[:h, :w]       #填充数据
 
     #二维Dct变换
     vis1 = cv2.dct(cv2.dct(vis0))
     #cv.SaveImage('a.jpg',cv.fromarray(vis0)) #保存图片
-    vis1.resize(32,32)
+    #vis1.resize(32,32)
+    np.resize(vis1, (32, 32))
 
     #把二维list变成一维list
-    img_list=np.flatten(vis1.tolist())
+    img_list=np.ndarray.flatten(vis1)
+    #img_list=[item for item in list for one in vis1]
 
     #计算均值
     avg = sum(img_list)*1./len(img_list)
