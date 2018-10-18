@@ -268,4 +268,7 @@ image.vary.jpg/*
 imageRetriveProject.pdf
 /实验数据/*
 mysql_config.py
-
+showHis.m
+实验报告.pdf
+/sample/*
+/result_graph/*

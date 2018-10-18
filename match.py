@@ -46,11 +46,14 @@ def query(filename):
                 continue
             colorVec2=row[1].split(',')
             colorVec2=list(map(eval, colorVec2))
-            #R2=pearsonr(colorVec1, colorVec2)
-            #rela=R2[0]
-            R2=Bdistance(colorVec1, colorVec2)
-            rela=R2
-            if abs(rela)>abs(leastNearRInFive):
+            R2=pearsonr(colorVec1, colorVec2)
+            rela=R2[0]
+            #R2=Bdistance(colorVec1, colorVec2)
+            #rela=R2
+            #忽略正负性
+            #if abs(rela)>abs(leastNearRInFive):
+            #考虑正负
+            if rela>leastNearRInFive:
                 index=0
                 for one in Rlist:
                     if rela >one:

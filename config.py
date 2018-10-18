@@ -5,7 +5,9 @@ __date__ = '9/24/2018 11:50 '
 FOLDER="./image.vary.jpg/"
 #FOLDER="./sample/"
 
-#每一个通道中细分的层数
+#使用 基于直方图进行匹配时的参数调教
+#每一个通道中细分的层数, 最终会形成COLOR_DEGREE^3中颜色
 COLOR_DEGREE=11
-
-MATCH_ITEM_NUM=50
+#返回的匹配的条数
+MATCH_ITEM_NUM=10
+#
