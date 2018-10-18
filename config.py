@@ -8,6 +8,6 @@ FOLDER="./image.vary.jpg/"
 #使用 基于直方图进行匹配时的参数调教
 #每一个通道中细分的层数, 最终会形成COLOR_DEGREE^3中颜色
 COLOR_DEGREE=11
-#返回的匹配的条数
+TABLE_NAME_COM=COLOR_DEGREE*COLOR_DEGREE*COLOR_DEGREE
+#显示匹配的条目数量
 MATCH_ITEM_NUM=10
-#
