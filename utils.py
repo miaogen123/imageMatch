@@ -51,3 +51,6 @@ def Bdistance(l1, l2):
 #handler.setFormatter(formatter)
 #logger.addHandler(handler)
 
+
+def getFileSuffix(filename):
+    return os.path.splitext(filename)[-1][1:]
