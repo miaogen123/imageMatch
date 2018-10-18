@@ -72,5 +72,9 @@ def pHash(imgfile):
     return ''.join(['%x' % int(''.join(avg_list[x:x+4]),2) for x in range(0,32*32,4)])
 
 
+#文件后缀
 def getFileSuffix(filename):
     return os.path.splitext(filename)[-1][1:]
+#汉明距
+def hammingDist(s1, s2):
+    return sum([ch1 != ch2 for ch1, ch2 in zip(s1, s2)])

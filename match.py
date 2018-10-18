@@ -9,7 +9,7 @@ from scipy.stats.stats import  pearsonr
 import  pymysql
 from config import *
 from mysql_config import *
-from utils import getColorVec, Bdistance
+from utils import getColorVec, Bdistance,hammingDist, pHash
 
 db = pymysql.connect(DB_addr, DB_user, DB_passwod, DB_name )
 
@@ -23,40 +23,44 @@ def query(filename):
         raise RuntimeError("文件不存在")
     start_time=time.time()
     img=cv2.imread(FOLDER+fileToProcess)
-    colorVec1=getColorVec(img)
+    phash1=pHash(img)
+
+    #测试：主观相似的图像的pHash的汉明距
+    #for e in range(7284, 7301):
+    #    file=str(e)+".jpg"
+    #    img2=cv2.imread(FOLDER+file)
+    #    phash2=pHash(img2)
+    #    print(file, ":", hammingDist(phash1,phash2))
+
+    #exit(1)
     #流式游标处理
     conn = pymysql.connect(host=DB_addr, user=DB_user, passwd=DB_passwod, db=DB_name, port=3306,
                            charset='utf8', cursorclass = pymysql.cursors.SSCursor)
-    leastNearRInFive=0
+    leastNearRInFive=256+1
 
     Rlist=[]
     namelist=[]
     init_str="k"
     for one in range(0, MATCH_ITEM_NUM):
-        Rlist.append(0)
+        #因为phash的汉明距越小越匹配, 初始集中设置大值
+        Rlist.append(256+1)
         namelist.append(init_str)
 
     with conn.cursor() as cursor:
-        cursor.execute("select name, featureValue from ImageMatchInfo_"+str(TABLE_NAME_COM)+" order by name")
+        cursor.execute("select name, featureValue from "+pHash_TABLE_NAME+" order by name")
         row=cursor.fetchone()
         count=1
         while row is not None:
             if row[0] == fileToProcess:
                 row=cursor.fetchone()
                 continue
-            colorVec2=row[1].split(',')
-            colorVec2=list(map(eval, colorVec2))
-            R2=pearsonr(colorVec1, colorVec2)
-            rela=R2[0]
-            #R2=Bdistance(colorVec1, colorVec2)
-            #rela=R2
-            #忽略正负性
-            #if abs(rela)>abs(leastNearRInFive):
-            #考虑正负
-            if rela>leastNearRInFive:
+            phash2=row[1]
+            rela=hammingDist(phash1, phash2)
+
+            if rela<leastNearRInFive:
                 index=0
                 for one in Rlist:
-                    if rela >one:
+                    if rela <one:
                         Rlist.insert(index, rela)
                         Rlist.pop(MATCH_ITEM_NUM)
                         namelist.insert(index, row[0])

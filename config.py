@@ -12,6 +12,7 @@ ImageFormatSet=["jpeg", "jpg", "bmp", "png"]
 #每一个通道中细分的层数, 最终会形成COLOR_DEGREE^3中颜色
 COLOR_DEGREE=11
 TABLE_NAME_COM=COLOR_DEGREE*COLOR_DEGREE*COLOR_DEGREE
+HISTOGRAM_TABLE_NAME="ImageMatchInfo_"+str(TABLE_NAME_COM)
 #显示匹配的条目数量
 MATCH_ITEM_NUM=10
 
