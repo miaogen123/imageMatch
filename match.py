@@ -37,7 +37,7 @@ def query(filename):
         namelist.append(init_str)
 
     with conn.cursor() as cursor:
-        cursor.execute("select name, featureValue from ImageMatchInfo_"+str(TABLE_NAME_COM)+" order by name")
+        cursor.execute("select name, featureValue from "+TABLE_NAME+" order by name")
         row=cursor.fetchone()
         count=1
         while row is not None:
