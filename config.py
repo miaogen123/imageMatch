@@ -10,7 +10,7 @@ ImageFormatSet=["jpeg", "jpg", "bmp", "png"]
 
 #使用 基于直方图进行匹配时的参数调教
 #每一个通道中细分的层数, 最终会形成COLOR_DEGREE^3中颜色
-COLOR_DEGREE=11
+COLOR_DEGREE=4
 TABLE_NAME_COM=COLOR_DEGREE*COLOR_DEGREE*COLOR_DEGREE
 HISTOGRAM_TABLE_NAME="ImageMatchInfo_"+str(TABLE_NAME_COM)
 #显示匹配的条目数量
@@ -21,4 +21,4 @@ MATCH_ITEM_NUM=10
 pHash_TABLE_NAME="pHash_feature"
 
 #使用的table
-TABLE_NAME=pHash_TABLE_NAME
+TABLE_NAME=HISTOGRAM_TABLE_NAME
