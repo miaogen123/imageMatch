@@ -46,3 +46,5 @@ TODO:
 
 1. 针对phash 优化：选择将位分割，形成256位向量，利用annoy计算hanmming distance.
 2. 选择Ann的分支在返回结果时，并没有对结果集按相关度进行排序，需要手动做
+***
+### 我的邮箱：miaogen156@gmail.com, 构建的时候有问题可以发邮件给我。welcome star！
